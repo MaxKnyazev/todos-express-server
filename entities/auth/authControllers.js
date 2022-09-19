@@ -18,6 +18,11 @@ class AuthControllers {
         error: null
       });  
     } catch (error) {
+      if (error.errors[0].type === 'unique violation') {
+        return res.status(400).json({
+          error: `Пользователь с таким email уже существует`
+        }) 
+      }
       return res.status(500).json({error})
     }
   }
