@@ -16,11 +16,13 @@ class UsersServices {
   }
 
   getUser = async (id) => {
-    // const sql = `SELECT * FROM users WHERE id='${id}'`;
+    // const sql = `SELECT * FROM users WHERE users_id='${id}'`;
     // const user = await database.query(sql, { type: QueryTypes.SELECT });
 
     const user = await User.findOne({ 
-      where: { id } 
+      where: { 
+        users_id: id 
+      } 
     });
     return user.dataValues;
   }
@@ -29,11 +31,11 @@ class UsersServices {
     const id = uuidv4();
     const hashPassword = bcrypt.hashSync(password, 10);
 
-    // const sql = `INSERT INTO users (id, email, password) VALUES ('${id}', '${email}', '${hashPassword}')`;
+    // const sql = `INSERT INTO users (users_id, email, password) VALUES ('${id}', '${email}', '${hashPassword}')`;
     // await database.query(sql, { type: QueryTypes.INSERT });
 
     const user = await User.create({ 
-      id, 
+      users_id: id, 
       password: hashPassword,
       role: 'user',
       email, 
@@ -43,12 +45,12 @@ class UsersServices {
   }
 
   deleteUser = async ({ id }) => {
-    // const sql = `DELETE FROM users WHERE id='${id}'`;
+    // const sql = `DELETE FROM users WHERE users_id='${id}'`;
     // await database.query(sql, { type: QueryTypes.DELETE });
 
     await User.destroy({
-      where: {
-        id,
+      where: { 
+        users_id: id 
       }
     });
 
@@ -60,20 +62,20 @@ class UsersServices {
   editUser = async ({ id, email, password }) => {
     const hashPassword = bcrypt.hashSync(password, 10);
 
-    // const sql = `UPDATE users SET email='${email}', password='${hashPassword}' WHERE id='${id}'`;
+    // const sql = `UPDATE users SET email='${email}', password='${hashPassword}' WHERE users_id='${id}'`;
     // await database.query(sql, { type: QueryTypes.UPDATE });
 
     await User.update({ 
       email,
       password: hashPassword,
     }, {
-      where: {
-        id
-      }
+      where: { 
+        users_id: id 
+      } 
     });
 
     const user = {
-      id, 
+      users_id: id, 
       email
     }
 
