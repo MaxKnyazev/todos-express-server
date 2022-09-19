@@ -1,6 +1,6 @@
 0) Обработка "кандидата" : если такой email уже существует : userServices --> registerUser
 
-1) создать в entities каталоги users, auth, todos
++++ 1) создать в entities каталоги users, auth, todos
 
 2) перенести логику регистрации и логина в auth :
    создать роуты, контроллеры, сервисы для auth

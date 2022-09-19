@@ -2,6 +2,7 @@ import express from 'express';
 import chalk from 'chalk';
 import { database } from './database/database.js';
 import { usersRoutes } from './entities/users/usersRoutes.js';
+import { authRoutes } from './entities/auth/authRoutes.js';
 import cors from 'cors';
 import { User } from './entities/users/usersModel.js';
 
@@ -12,6 +13,7 @@ app.use(cors());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use('/users', usersRoutes);
+app.use('/auth', authRoutes);
 
 const start = async () => {
   try {
