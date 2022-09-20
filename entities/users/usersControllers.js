@@ -19,7 +19,7 @@ class UsersControllers {
       const user = await usersServices.getUser(id);
 
       if (!user) {
-        return res.status(500).json({
+        return res.status(400).json({
           error: `Пользователь с id ${id} не обнаружен`
         });
       }

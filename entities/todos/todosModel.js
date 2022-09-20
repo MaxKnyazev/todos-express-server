@@ -20,7 +20,7 @@ const Todo = database.define('todo', {
 
   value: {
     type: DataTypes.TEXT,
-    allowNull: false,
+    allowNull: true,
   },
 
   checked: {

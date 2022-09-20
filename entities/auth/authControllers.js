@@ -1,15 +1,23 @@
 import authServices from './authServices.js';
+import { validationResult } from 'express-validator';
 
 class AuthControllers {
   registerUser = async (req, res) => {
     try {
-      const { email, password } = req.body;
+      const errors = validationResult(req);
 
-      if (!email || !password) {
+      if (!errors.isEmpty()) {
         return res.status(400).json({
-          error: `Неверный email или password`
+          error: errors
         });
       }
+      const { email, password } = req.body;
+
+      // if (!email || !password) {
+      //   return res.status(400).json({
+      //     error: `Неверный email или password`
+      //   });
+      // }
 
       const user = await authServices.registerUser({ email, password });
 
@@ -23,6 +31,7 @@ class AuthControllers {
           error: `Пользователь с таким email уже существует`
         }) 
       }
+      console.log(error);
       return res.status(500).json({error})
     }
   }
