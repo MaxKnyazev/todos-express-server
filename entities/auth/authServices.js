@@ -1,6 +1,7 @@
 import { User } from '../users/usersModel.js';
 import bcrypt from 'bcryptjs';
 import { v4 as uuidv4 } from 'uuid';
+import jwt from 'jsonwebtoken';
 
 class AuthServices {
   registerUser = async ({email, password }) => {
@@ -15,7 +16,7 @@ class AuthServices {
     });
 
     return user.dataValues;
-  };
+  }
 
   loginUser = async ({ email, password }) => {
     const user = await User.findOne({
@@ -29,7 +30,7 @@ class AuthServices {
     if (!user) {
       return {
         error: `Пользователя с таким email не существует`,
-      };
+      }
     }
 
     const validPassword = bcrypt.compareSync(
@@ -40,15 +41,27 @@ class AuthServices {
     if (!validPassword) {
       return {
         error: `Логин или пароль неверный`,
-      };
+      }
     }
+
+    const accessToken = jwt.sign(
+      {
+        id: user.dataValues.users_id,
+        email: user.dataValues.email
+      }, 
+      process.env.SECRET_KEY, 
+      {
+        expiresIn: '30m'
+      }
+    );
 
     return {
       message: `Успешная авторизация`,
+      accessToken,
       role: user.dataValues.role,
       email: user.dataValues.email,
-    };
-  };
+    }
+  }
 }
 
 export default new AuthServices();
