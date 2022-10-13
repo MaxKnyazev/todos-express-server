@@ -16,4 +16,8 @@ authRoutes.route('/register')
 authRoutes.route('/login')
   .post(authControllers.loginUser);
 
+authRoutes.route('/currentUser')
+  .get(authControllers.currentUser);
+
+
 export { authRoutes };

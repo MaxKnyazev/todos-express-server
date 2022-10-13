@@ -62,6 +62,28 @@ class AuthControllers {
       return res.status(500).json({error})
     }
   }
+
+  currentUser = async (req, res) => {
+    try {
+      const accessToken = req.headers.authorization.split(' ')[1];
+
+      if (!accessToken) {
+        return res.status(401).json({
+          error: 'Access token not provided',
+        });
+      }
+      
+      const result = await authServices.currentUser(accessToken);
+      
+      return res.status(200).json({
+        ...result,
+        error: null
+      });
+      
+    } catch (error) {
+      return res.status(500).json({error})
+    }
+  }
 }
 
 export default new AuthControllers();

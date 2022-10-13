@@ -21,7 +21,7 @@ app.use('/todos', todosRoutes);
 const start = async () => {
   try {
     await database.authenticate();
-    console.log(chalk.bgGreen('Connection has been established successfully.'));
+    console.log(chalk.bgGreen('Connection has been established successfully'));
     
     await User.sync({ alter: true });
     console.log(chalk.bgGreen('User model has been synchronized successfully'));

@@ -62,6 +62,44 @@ class AuthServices {
       email: user.dataValues.email,
     }
   }
+  
+  currentUser = async (accessToken) => {
+    const decodedUser = jwt.verify(accessToken, process.env.SECRET_KEY);
+    // console.log(decodedUser);
+
+    const { email } = decodedUser;
+
+    const user = await User.findOne({
+      where: {
+        email,
+      },
+    });
+
+    console.log(user);
+
+    if (!user) {
+      return {
+        error: `Пользователя с таким email не существует`,
+      }
+    }
+
+    const freshAccessToken = jwt.sign(
+      {
+        id: user.dataValues.users_id,
+        email: user.dataValues.email
+      }, 
+      process.env.SECRET_KEY, 
+      {
+        // expiresIn: '30m'
+        expiresIn: '5s'
+      }
+    );
+
+    return {
+      accessToken: freshAccessToken,
+      user,
+    }
+  }
 }
 
 export default new AuthServices();
