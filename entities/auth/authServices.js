@@ -51,6 +51,7 @@ class AuthServices {
       }, 
       process.env.SECRET_KEY, 
       {
+        // expiresIn: '5s'
         expiresIn: '30m'
       }
     );
@@ -65,7 +66,8 @@ class AuthServices {
   
   currentUser = async (accessToken) => {
     const decodedUser = jwt.verify(accessToken, process.env.SECRET_KEY);
-    // console.log(decodedUser);
+    console.log('AuthServices -> currentUser -> decodedUser --------------------');
+    console.log(decodedUser);
 
     const { email } = decodedUser;
 
@@ -90,8 +92,8 @@ class AuthServices {
       }, 
       process.env.SECRET_KEY, 
       {
-        // expiresIn: '30m'
-        expiresIn: '5s'
+        expiresIn: '30m'
+        // expiresIn: '5s'
       }
     );
 
