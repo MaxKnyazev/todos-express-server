@@ -51,8 +51,8 @@ class AuthServices {
       }, 
       process.env.SECRET_KEY, 
       {
-        // expiresIn: '5s'
-        expiresIn: '30m'
+        expiresIn: '5s'
+        // expiresIn: '30m'
       }
     );
 
@@ -92,8 +92,8 @@ class AuthServices {
       }, 
       process.env.SECRET_KEY, 
       {
-        expiresIn: '30m'
-        // expiresIn: '5s'
+        // expiresIn: '30m'
+        expiresIn: '5s'
       }
     );
 
