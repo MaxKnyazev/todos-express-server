@@ -8,26 +8,26 @@ class AuthServices {
     const id = uuidv4();
     const hashPassword = bcrypt.hashSync(password, 10);
 
-    const user = await User.create({
+    const resultUser = await User.create({
       users_id: id,
       password: hashPassword,
       role: 'user',
       email,
     });
 
-    return user.dataValues;
+    return resultUser.dataValues;
   }
 
   loginUser = async ({ email, password }) => {
-    const user = await User.findOne({
+    const resultUser = await User.findOne({
       where: {
         email,
       },
     });
 
-    console.log(user);
+    console.log(resultUser);
 
-    if (!user) {
+    if (!resultUser) {
       return {
         error: `Пользователя с таким email не существует`,
       }
@@ -35,7 +35,7 @@ class AuthServices {
 
     const validPassword = bcrypt.compareSync(
       password,
-      user.dataValues.password
+      resultUser.dataValues.password
     );
 
     if (!validPassword) {
@@ -46,8 +46,8 @@ class AuthServices {
 
     const accessToken = jwt.sign(
       {
-        id: user.dataValues.users_id,
-        email: user.dataValues.email
+        id: resultUser.dataValues.users_id,
+        email: resultUser.dataValues.email
       }, 
       process.env.SECRET_KEY, 
       {
@@ -59,8 +59,9 @@ class AuthServices {
     return {
       message: `Успешная авторизация`,
       accessToken,
-      role: user.dataValues.role,
-      email: user.dataValues.email,
+      // role: resultUser.dataValues.role,
+      // email: resultUser.dataValues.email,
+      user: resultUser.dataValues,
     }
   }
   
@@ -71,15 +72,15 @@ class AuthServices {
 
     const { email } = decodedUser;
 
-    const user = await User.findOne({
+    const resultUser = await User.findOne({
       where: {
         email,
       },
     });
 
-    console.log(user);
+    console.log(resultUser);
 
-    if (!user) {
+    if (!resultUser) {
       return {
         error: `Пользователя с таким email не существует`,
       }
@@ -87,8 +88,8 @@ class AuthServices {
 
     const freshAccessToken = jwt.sign(
       {
-        id: user.dataValues.users_id,
-        email: user.dataValues.email
+        id: resultUser.dataValues.users_id,
+        email: resultUser.dataValues.email
       }, 
       process.env.SECRET_KEY, 
       {
@@ -99,7 +100,7 @@ class AuthServices {
 
     return {
       accessToken: freshAccessToken,
-      user,
+      user: resultUser,
     }
   }
 }
